@@ -13,7 +13,6 @@ import sprTexture from '~/assets/spr-lesson-builder-dark.jpg';
 import { Footer } from '~/components/footer';
 import { baseMeta } from '~/utils/meta';
 import { Intro } from './intro';
-import { HomeContent } from '~/routes/home/home-content/home-content.jsx';
 import { useEffect, useRef, useState } from 'react';
 import config from '~/config.json';
 import styles from './home.module.css';
@@ -97,11 +96,6 @@ export const Home = () => {
         id="intro"
         sectionRef={intro}
         scrollIndicatorHidden={scrollIndicatorHidden}
-      />
-      <HomeContent
-        id="homecontent"
-        sectionRef={homecontent}
-        visible={visibleSections.includes(homecontent.current)}
       />
       <Footer />
     </div>

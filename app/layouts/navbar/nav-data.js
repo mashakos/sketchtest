@@ -1,26 +1,26 @@
 import config from '~/config.json';
 
 export const navLinks = [
-  {
-    label: 'Search',
-    pathname: '/search',
-  },
-  {
-    label: 'Projects',
-    pathname: '/projects',
-  },
   // {
-  //   label: 'Details',
-  //   pathname: '/#details',
+  //   label: 'Search',
+  //   pathname: '/search',
   // },
-  {
-    label: 'Articles',
-    pathname: '/articles',
-  },
-  {
-    label: 'Contact',
-    pathname: '/contact',
-  },
+  // {
+  //   label: 'Projects',
+  //   pathname: '/projects',
+  // },
+  // // {
+  // //   label: 'Details',
+  // //   pathname: '/#details',
+  // // },
+  // {
+  //   label: 'Articles',
+  //   pathname: '/articles',
+  // },
+  // {
+  //   label: 'Contact',
+  //   pathname: '/contact',
+  // },
 ];
 
 export const socialLinks = [

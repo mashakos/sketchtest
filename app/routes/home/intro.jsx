@@ -8,14 +8,56 @@ import { VisuallyHidden } from '~/components/visually-hidden';
 import { Link as RouterLink } from '@remix-run/react';
 import { useInterval, usePrevious, useScrollToHash } from '~/hooks';
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { cssProps } from '~/utils/style';
+import { cssProps, media } from '~/utils/style';
 import config from '~/config.json';
 import { useHydrated } from '~/hooks/useHydrated';
 import styles from './intro.module.css';
+import SvgComponent from './svg-component.jsx';
+import SvgFace from './svg-face.jsx';
 
-const DisplacementSphere = lazy(() =>
-  import('./displacement-sphere').then(module => ({ default: module.DisplacementSphere }))
-);
+import * as pkg from 'react-rough-fiber';
+import { animate } from 'framer-motion';
+import {
+  ProjectBackground,
+  ProjectContainer,
+  ProjectHeader,
+  ProjectImage,
+  ProjectSection,
+  ProjectSectionColumns,
+  ProjectSectionContent,
+  ProjectSectionHeading,
+  ProjectSectionText,
+  ProjectTextRow,
+} from '~/layouts/project';
+
+import { Image } from '~/components/image/index.js';
+import ShibrainWorkOne from '~/assets/shibrainwork-one.webp';
+import ShibrainWorkOneLarge from '~/assets/shibrainwork-one-large.webp';
+import ShibrainWorkOnePlaceholder from '~/assets/shibrainwork-one-placeholder.png';
+const {RoughSVG} = pkg;
+
+export const useAnimatedCounter = (
+  maxValue,
+  initialValue = 0,
+  duration = 1,
+) => {
+  const [counter, setCounter] = useState(initialValue);
+
+  useEffect(() => {
+    const controls = animate(initialValue, maxValue, {
+      duration,
+      repeat: Infinity,
+      ease: "linear",
+      onUpdate(value) {
+        setCounter(value);
+      }
+    });
+    return () => controls.stop();
+  }, [initialValue, maxValue, duration]);
+
+  return counter.toFixed(2);
+};
+
 
 export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
   const { theme } = useTheme();
@@ -45,10 +87,11 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
     }
   }, [theme, prevTheme]);
 
-  const handleScrollClick = event => {
-    event.preventDefault();
-    scrollToHash(event.currentTarget.href);
-  };
+
+
+  let testround = useAnimatedCounter(1,8,1);
+
+
 
   return (
     <Section
@@ -65,80 +108,77 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
           <>
             {isHydrated && (
               <Suspense>
-                <DisplacementSphere />
-              </Suspense>
-            )}
-            <header className={styles.text}>
-              <h1 className={styles.name} data-visible={visible} id={titleId}>
-                {/*<DecoderText text={config.name} delay={500} />*/}
-                {config.name}
-              </h1>
-              <Heading level={0} as="h2" className={styles.title}>
-                <VisuallyHidden className={styles.label}>
-                  {`${config.role} + ${introLabel}`}
-                </VisuallyHidden>
-                <span aria-hidden className={styles.row}>
+                <ProjectSection>
+                <ProjectSectionContent className={styles.grid}>
+                  <div className={styles.gridText}>
+                    <SvgComponent
+                      width={256}
+                      height={300}
+                      title="React"
+                    />
+                    <p>{testround}</p>
+                    <RoughSVG
+                      className={styles.name}
+                      data-visible={visible}
+                      options={{roughness: 1, seed: testround, fillStyle: 'solid'}}>
+                      <SvgComponent
+                        width={256}
+                        height={300}
+                        title="React"
+                      />
+                      {/*<svg viewBox="0 0 128 128" width="512" height="512">*/}
+                      {/*    <circle cx={64} cy={64} r={48} stroke="currentColor" fill="#82ca9d" />*/}
+                      {/*</svg>*/}
+                    </RoughSVG>
+                  </div>
+                  <div className={styles.gridImage}>
+                    <div className={styles.gridBackground}>
+                      <SvgFace
+                        width={256}
+                        height={300}
+                        title="React"
+                      />
+                      <p>{testround}</p>
+                      <RoughSVG
+                        className={styles.name}
+                        data-visible={visible}
+                        options={{roughness: 2, seed: testround, fillStyle: 'zigzag'}}>
+                        <SvgFace
+                          width={256}
+                          height={300}
+                          title="React"
+                        />
+                        {/*<svg viewBox="0 0 128 128" width="512" height="512">*/}
+                        {/*    <circle cx={64} cy={64} r={48} stroke="currentColor" fill="#82ca9d" />*/}
+                        {/*</svg>*/}
+                      </RoughSVG>
+                    </div>
+                  </div>
+                </ProjectSectionContent>
+                  <header className={styles.text}>
+                    <Heading level={0} as="h2" className={styles.title}>
+                      <VisuallyHidden className={styles.label}>
+                        {`${config.role} + ${introLabel}`}
+                      </VisuallyHidden>
+                      <span aria-hidden className={styles.row}>
                   <span
                     className={styles.word}
                     data-status={status}
                     style={cssProps({ delay: tokens.base.durationXS })}
                   >
-                    {config.role}
+                    Hand Drawn
                   </span>
                   <span className={styles.line} data-status={status} />
                 </span>
-                <div className={styles.row}>
-                  {disciplines.map(item => (
-                    <Transition
-                      unmount
-                      in={item === currentDiscipline}
-                      timeout={{ enter: 3000, exit: 2000 }}
-                      key={item}
-                    >
-                      {({ status, nodeRef }) => (
-                        <span
-                          aria-hidden
-                          ref={nodeRef}
-                          className={styles.word}
-                          data-plus={true}
-                          data-status={status}
-                          style={cssProps({ delay: tokens.base.durationL })}
-                        >
-                          {item}
-                        </span>
-                      )}
-                    </Transition>
-                  ))}
-                </div>
-              </Heading>
-            </header>
-            <RouterLink
-              to="/#homecontent"
-              className={styles.scrollIndicator}
-              data-status={status}
-              data-hidden={scrollIndicatorHidden}
-              onClick={handleScrollClick}
-            >
-              <VisuallyHidden>Scroll to projects</VisuallyHidden>
-            </RouterLink>
-            <RouterLink
-              to="/#homecontent"
-              className={styles.mobileScrollIndicator}
-              data-status={status}
-              data-hidden={scrollIndicatorHidden}
-              onClick={handleScrollClick}
-            >
-              <VisuallyHidden>Scroll to projects</VisuallyHidden>
-              <svg
-                aria-hidden
-                stroke="currentColor"
-                width="43"
-                height="15"
-                viewBox="0 0 43 15"
-              >
-                <path d="M1 1l20.5 12L42 1" strokeWidth="2" fill="none" />
-              </svg>
-            </RouterLink>
+
+                    </Heading>
+                  </header>
+                </ProjectSection>
+
+              </Suspense>
+            )}
+
+
           </>
         )}
       </Transition>
