@@ -14,6 +14,7 @@ import { useHydrated } from '~/hooks/useHydrated';
 import styles from './intro.module.css';
 import SvgComponent from './svg-component.jsx';
 import SvgFace from './svg-face.jsx';
+import SvgSmiling from './svg-smiling.jsx';
 
 import * as pkg from 'react-rough-fiber';
 import { animate } from 'framer-motion';
@@ -133,7 +134,7 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                   </div>
                   <div className={styles.gridImage}>
                     <div className={styles.gridBackground}>
-                      <SvgFace
+                      <SvgSmiling
                         width={256}
                         height={300}
                         title="React"
@@ -142,10 +143,10 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                       <RoughSVG
                         className={styles.name}
                         data-visible={visible}
-                        options={{roughness: 2, seed: testround, fillStyle: 'zigzag'}}>
-                        <SvgFace
-                          width={256}
-                          height={300}
+                        options={{roughness: 4, seed: testround, fillStyle: 'zigzag'}}>
+                        <SvgSmiling
+                          width={400}
+                          height={532}
                           title="React"
                         />
                         {/*<svg viewBox="0 0 128 128" width="512" height="512">*/}
